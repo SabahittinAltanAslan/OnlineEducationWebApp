@@ -11,7 +11,7 @@ using OnlineEducationWebApp.Data.Context;
 
 namespace OnlineEducationWebApp.Data.Migrations
 {
-    [DbContext(typeof(LessonContext))]
+    [DbContext(typeof(ProjectContext))]
     [Migration("20240524180302_InitialCreate")]
     partial class InitialCreate
     {

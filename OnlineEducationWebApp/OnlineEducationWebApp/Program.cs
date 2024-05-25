@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using OnlineEducationWebApp.Data.Context;
+using OnlineEducationWebApp.Data.Services;
+using OnlineEducationWebApp.Interfaces;
+
 namespace OnlineEducationWebApp
 {
     public class Program
@@ -8,6 +13,16 @@ namespace OnlineEducationWebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ProjectContext>(opt =>
+            {
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            builder.Services.AddScoped<IStudentService,StudentService>();
+            builder.Services.AddScoped<ILessonService,LessonService>();
+            builder.Services.AddScoped<ITeacherService,TeacherService>();
+            builder.Services.AddScoped<IDocumentService,DocumentService>();
 
             var app = builder.Build();
 

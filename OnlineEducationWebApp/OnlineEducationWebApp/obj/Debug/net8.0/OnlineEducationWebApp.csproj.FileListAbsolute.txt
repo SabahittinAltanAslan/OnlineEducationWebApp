@@ -136,3 +136,4 @@ C:\Users\Legen\OneDrive\Belgeler\GitHub\OnlineEducationWebApp\OnlineEducationWeb
 C:\Users\Legen\OneDrive\Belgeler\GitHub\OnlineEducationWebApp\OnlineEducationWebApp\OnlineEducationWebApp\obj\Debug\net8.0\OnlineEducationWebApp.pdb
 C:\Users\Legen\OneDrive\Belgeler\GitHub\OnlineEducationWebApp\OnlineEducationWebApp\OnlineEducationWebApp\obj\Debug\net8.0\OnlineEducationWebApp.genruntimeconfig.cache
 C:\Users\Legen\OneDrive\Belgeler\GitHub\OnlineEducationWebApp\OnlineEducationWebApp\OnlineEducationWebApp\obj\Debug\net8.0\ref\OnlineEducationWebApp.dll
+C:\Users\Legen\OneDrive\Belgeler\GitHub\OnlineEducationWebApp\OnlineEducationWebApp\OnlineEducationWebApp\obj\Debug\net8.0\OnlineEducationWebApp.sourcelink.json

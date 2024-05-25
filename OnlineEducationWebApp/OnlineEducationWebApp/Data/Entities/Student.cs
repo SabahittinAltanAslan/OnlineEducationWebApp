@@ -8,5 +8,8 @@
         public string SchNumber { get; set; }
         public DateTime BirthDay { get; set; }
 
+        //Navigation Property
+        public ICollection<StudentLesson> StudentLessons { get; set; }
+
     }
 }
