@@ -1,33 +1,47 @@
-﻿using OnlineEducationWebApp.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineEducationWebApp.Data.Context;
+using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Interfaces;
 
 namespace OnlineEducationWebApp.Data.Services
 {
     public class TeacherService : ITeacherService
     {
-        public Task<Teacher> CreateAsync(Teacher teacher)
+        private readonly ProjectContext _context;
+
+        public TeacherService(ProjectContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Teacher> CreateAsync(Teacher teacher)
+        {
+            await _context.Teachers.AddAsync(teacher);
+            await _context.SaveChangesAsync();
+            return teacher;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var removedEntity = await _context.Teachers.FindAsync(id);
+            _context.Teachers.Remove(removedEntity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<Teacher>> GetAllAsync()
+        public async Task<List<Teacher>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Teachers.ToListAsync();
         }
 
-        public Task<Teacher> GetByIdAsync(int id)
+        public async Task<Teacher> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Teachers.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(Teacher teacher)
+        public async Task UpdateAsync(Teacher teacher)
         {
-            throw new NotImplementedException();
+            var unchangedEntity = await _context.Teachers.FindAsync(teacher.Id);
+            _context.Entry(unchangedEntity).CurrentValues.SetValues(teacher);
+            await _context.SaveChangesAsync();
         }
     }
 }

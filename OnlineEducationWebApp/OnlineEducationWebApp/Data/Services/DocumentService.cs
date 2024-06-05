@@ -1,33 +1,47 @@
-﻿using OnlineEducationWebApp.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineEducationWebApp.Data.Context;
+using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Interfaces;
 
 namespace OnlineEducationWebApp.Data.Services
 {
     public class DocumentService : IDocumentService
     {
-        public Task<Document> CreateAsync(Document document)
+        private readonly ProjectContext _context;
+
+        public DocumentService(ProjectContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Document> CreateAsync(Document document)
+        {
+            await _context.Documents.AddAsync(document);
+            await _context.SaveChangesAsync();
+            return document;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var removedEntity = await _context.Documents.FindAsync(id);
+            _context.Documents.Remove(removedEntity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<List<Document>> GetAllAsync()
+        public async Task<List<Document>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Documents.ToListAsync();
         }
 
-        public Task<Document> GetByIdAsync(int id)
+        public async Task<Document> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Documents.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(Document document)
+        public async Task UpdateAsync(Document document)
         {
-            throw new NotImplementedException();
+            var unchangedEntity = await _context.Documents.FindAsync(document.Id);
+            _context.Entry(unchangedEntity).CurrentValues.SetValues(document);
+            await _context.SaveChangesAsync();
         }
     }
 }

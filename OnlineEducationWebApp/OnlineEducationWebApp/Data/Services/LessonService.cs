@@ -1,33 +1,47 @@
-﻿using OnlineEducationWebApp.Data.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineEducationWebApp.Data.Context;
+using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Interfaces;
 
 namespace OnlineEducationWebApp.Data.Services
 {
     public class LessonService : ILessonService
     {
-        public Task<Lesson> CreateAsync(Lesson lesson)
+        private readonly ProjectContext _context;
+
+        public LessonService(ProjectContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task<Lesson> CreateAsync(Lesson lesson)
+        {
+            await _context.Lessons.AddAsync(lesson);
+            await _context.SaveChangesAsync();
+            return lesson;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var removedEntity = await _context.Lessons.FindAsync(id);
+            _context.Lessons.Remove(removedEntity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<Lesson> GetLessonByIdAsync(int id)
+        public async Task<Lesson> GetLessonByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Lessons.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task<List<Lesson>> GetLessonsAsync()
+        public async Task<List<Lesson>> GetLessonsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Lessons.ToListAsync();
         }
 
-        public Task UpdateAsync(Lesson lesson)
+        public async Task UpdateAsync(Lesson lesson)
         {
-            throw new NotImplementedException();
+            var unchangedEntity = await _context.Lessons.FindAsync(lesson.Id);
+            _context.Entry(unchangedEntity).CurrentValues.SetValues(lesson);
+            await _context.SaveChangesAsync();
         }
     }
 }
