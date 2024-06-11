@@ -5,7 +5,6 @@ using OnlineEducationWebApp.Interfaces;
 
 namespace OnlineEducationWebApp.Controllers
 {
-    [Route("students")]
     public class StudentController : Controller
     {
         private readonly IStudentService _service;
@@ -14,15 +13,15 @@ namespace OnlineEducationWebApp.Controllers
             _service = service;
         }
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        [HttpGet]
+        public async Task<IActionResult> GetStudentForLesson(int id)
         {
-            var result = await _service.GetAllStudentsAsync();
+            var result = await _service.GetStudentForLessonAsync(id);
             return View(result);
         }
 
-        [HttpGet("get/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetStudentById(int id)
         {
             var result = await _service.GetStudentByIdAsync(id);
             if (result == null)
@@ -32,44 +31,21 @@ namespace OnlineEducationWebApp.Controllers
             return View(result);
         }
 
-        [HttpGet("create")]
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult CreateStudent()
         {
             return View();
         }
 
-        [HttpPost("create")]
-        public async Task<IActionResult> Create(Student student)
+        [HttpPost]
+        public async Task<IActionResult> CreateStudent(Student student)
         {
             var addedProduct = await _service.CreateAsync(student);
-            return RedirectToAction("GetAll");
+            return RedirectToAction("#");//Login sayfasına yönlendirilecek
         }
 
-        [HttpGet("update/{id}")]
-        public async Task<IActionResult> Update(int id)
-        {
-            var student = await _service.GetStudentByIdAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            return View(student);
-        }
-
-        [HttpPost("update/{id}")]
-        public async Task<IActionResult> Update(Student student)
-        {
-            var checkProduct = await _service.GetStudentByIdAsync(student.Id);
-            if (checkProduct == null)
-            {
-                return NotFound(student.Id);
-            }
-            await _service.UpdateAsync(student);
-            return RedirectToAction("GetAll");
-        }
-
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteStudent(int id)
         {
             var checkProduct = await _service.GetStudentByIdAsync(id);
             if (checkProduct == null)
@@ -77,7 +53,7 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(id);
             }
             await _service.DeleteAsync(id);
-            return Redirect("/students/all");
+            return RedirectToAction("#");//Login Sayfasına Yönlendirilecek Öğrenci Layoutunda Hesap sil butonu olacak orası için method
         }
     }
 }

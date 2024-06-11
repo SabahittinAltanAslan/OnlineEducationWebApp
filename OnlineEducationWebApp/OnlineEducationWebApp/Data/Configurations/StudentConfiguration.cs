@@ -13,6 +13,9 @@ namespace OnlineEducationWebApp.Data.Configurations
             builder.Property(x => x.SchNumber).IsRequired();
             builder.Property(x => x.BirthDay).IsRequired();
             builder.Property(x=>x.SchNumber).HasMaxLength(10);
+            builder.Property(x=>x.UserName).IsRequired();
+            builder.Property(x=>x.UserName).HasMaxLength(10);
+            builder.Property(x=>x.Password).IsRequired();
         }
     }
 }

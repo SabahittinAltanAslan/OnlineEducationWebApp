@@ -38,7 +38,7 @@
                         <td>@lesson.Url</td>
                         <td>
                             <button class="btn btn-warning" onclick="window.location.href='@Url.Action("GetForLesson", "Document", new { id = lesson.Id })'">Documents</button>
-                            <button class="btn btn-warning" onclick="window.location.href='@Url.Action("GetForLesson", "Student", new { id = lesson.Id })'">Students</button>
+                            <button class="btn btn-warning" onclick="window.location.href='@Url.Action("GetStudentForLesson", "Student", new { id = lesson.Id })'">Students</button>
                             <button class="btn btn-danger" onclick="confirmDelete(@lesson.Id)">Delete</button>
                         </td>
                     </tr>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineEducationWebApp.Data.Context;
 
@@ -11,9 +12,11 @@ using OnlineEducationWebApp.Data.Context;
 namespace OnlineEducationWebApp.Data.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class LessonContextModelSnapshot : ModelSnapshot
+    [Migration("20240611193015_DocumentModelUpdate")]
+    partial class DocumentModelUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,10 +98,6 @@ namespace OnlineEducationWebApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SchNumber")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -107,11 +106,6 @@ namespace OnlineEducationWebApp.Data.Migrations
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

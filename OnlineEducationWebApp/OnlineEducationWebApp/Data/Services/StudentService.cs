@@ -13,23 +13,24 @@ namespace OnlineEducationWebApp.Data.Services
         {
             _context = context;
         }
+
+        public async Task<List<Student>> GetStudentForLessonAsync(int lessonId)
+        {
+            var studentIds = await _context.StudentLessons
+                .Where(sl => sl.LessonId == lessonId)
+                .Select(sl => sl.StudentId)
+                .ToListAsync();
+
+            return await _context.Students
+                .Where(s => studentIds.Contains(s.Id))
+                .ToListAsync();
+        }
+
         public async Task<Student> CreateAsync(Student student)
         {
-            await _context.Students.AddAsync(student);
-            await _context.SaveChangesAsync();
-            return student;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var removedEntity = await _context.Students.FindAsync(id);
-            _context.Students.Remove(removedEntity);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<Student>> GetAllStudentsAsync()
-        {
-            return await _context.Students.ToListAsync();
+                await _context.Students.AddAsync(student);
+                await _context.SaveChangesAsync();
+                return student;
         }
 
         public async Task<Student> GetStudentByIdAsync(int id)
@@ -37,10 +38,10 @@ namespace OnlineEducationWebApp.Data.Services
             return await _context.Students.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task UpdateAsync(Student student)
+        public async Task DeleteAsync(int id)
         {
-            var unchangedEntity = await _context.Students.FindAsync(student.Id);
-            _context.Entry(unchangedEntity).CurrentValues.SetValues(student);
+            var removedEntity = await _context.Students.FindAsync(id);
+            _context.Students.Remove(removedEntity);
             await _context.SaveChangesAsync();
         }
     }

@@ -8,7 +8,7 @@ namespace OnlineEducationWebApp.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Document> builder)
         {
-            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.OriginalFileName).IsRequired();
             builder.Property(x=>x.Description).HasMaxLength(150);
             builder.Property(x=>x.FilePath).HasMaxLength(100);
         }
