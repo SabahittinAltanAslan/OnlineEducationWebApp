@@ -12,43 +12,31 @@ namespace OnlineEducationWebApp.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _service.GetLessonsAsync();
 
+        [HttpGet]
+        public async Task<IActionResult> GetForTeacher(int id)
+        {
+            var result = await _service.GetTeacherLessonAsync(id);
             return View(result);
+
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)//FromQuery
+        //Ders üretirken hocanın Id değeri burada doldurulup post edilmeye yollanacak
+        [HttpGet]
+        public IActionResult Create()
         {
-            var result = await _service.GetLessonByIdAsync(id);
-            if (result == null)
-            {
-                return NotFound(id);
-            }
-            return View(result);
+
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Lesson lesson)//FromBody
+        public async Task<IActionResult> Create(Lesson lesson,int teacherId)//FromBody
         {
-            var addedProduct = await _service.CreateAsync(lesson);
+
+            var addedProduct = await _service.CreateAsync(lesson,teacherId);
             return RedirectToAction("Index");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Lesson lesson)
-        {
-            var checkProduct = await _service.GetLessonByIdAsync(lesson.Id);
-            if (checkProduct == null)
-            {
-                return NotFound(lesson.Id);
-            }
-            await _service.UpdateAsync(lesson);
-            return RedirectToAction("Index");
-        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

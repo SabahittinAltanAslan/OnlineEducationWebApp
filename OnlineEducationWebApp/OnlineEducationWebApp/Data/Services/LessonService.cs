@@ -13,11 +13,17 @@ namespace OnlineEducationWebApp.Data.Services
         {
             _context = context;
         }
-        public async Task<Lesson> CreateAsync(Lesson lesson)
+        public async Task<Lesson> CreateAsync(Lesson lesson, int teacherId)
         {
-            await _context.Lessons.AddAsync(lesson);
-            await _context.SaveChangesAsync();
-            return lesson;
+            var teacher = await _context.Teachers.FindAsync(teacherId);
+            if (teacher != null)
+            {
+                lesson.Teachers = new List<Teacher> { teacher };
+                await _context.Lessons.AddAsync(lesson);
+                await _context.SaveChangesAsync();
+                return lesson;
+            }
+            return null;
         }
 
         public async Task DeleteAsync(int id)
@@ -37,11 +43,12 @@ namespace OnlineEducationWebApp.Data.Services
             return await _context.Lessons.ToListAsync();
         }
 
-        public async Task UpdateAsync(Lesson lesson)
+        public async Task<List<Lesson>> GetTeacherLessonAsync(int teacherId)
         {
-            var unchangedEntity = await _context.Lessons.FindAsync(lesson.Id);
-            _context.Entry(unchangedEntity).CurrentValues.SetValues(lesson);
-            await _context.SaveChangesAsync();
+            return await _context.Lessons
+                .Where(lesson => lesson.Teachers.Any(teacher => teacher.Id == teacherId))
+                .ToListAsync();
         }
+
     }
 }

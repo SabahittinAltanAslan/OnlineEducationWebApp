@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineEducationWebApp.Data.Entities;
+using OnlineEducationWebApp.Data.Services;
 using OnlineEducationWebApp.Interfaces;
 
 namespace OnlineEducationWebApp.Controllers
@@ -7,47 +8,50 @@ namespace OnlineEducationWebApp.Controllers
     public class DocumentController : Controller
     {
         private readonly IDocumentService _service;
-        public DocumentController(IDocumentService service)
+        private readonly ILessonService _lessonService;
+        public DocumentController(IDocumentService service, ILessonService lessonService)
         {
             _service = service;
+            _lessonService = lessonService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetForLesson(int id)
         {
-            var result = await _service.GetAllAsync();
-
+            var result = await _service.GetDocumentForLessonAsync(id);
             return View(result);
+
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)//FromQuery
+        [HttpGet]
+        public IActionResult Create(int lessonId)
         {
-            var result = await _service.GetByIdAsync(id);
-            if (result == null)
-            {
-                return NotFound(id);
-            }
-            return View(result);
+            var document = new Document { LessonId = lessonId };
+            return View(document);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Document document)//FromBody
+        public async Task<IActionResult> Create(Document document, IFormFile pdfFile)
         {
-            var addedProduct = await _service.CreateAsync(document);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await _service.UploadAsync(document, pdfFile);
+                return RedirectToAction("GetForLesson", new { lessonId = document.LessonId });
+            }
+            return View(document);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(Document document)
+        [HttpGet]
+        public async Task<IActionResult> Download(int id)
         {
-            var checkProduct = await _service.GetByIdAsync(document.Id);
-            if (checkProduct == null)
+            var document = await _service.GetByIdAsync(id);
+            if (document == null)
             {
-                return NotFound(document.Id);
+                return NotFound();
             }
-            await _service.UpdateAsync(document);
-            return RedirectToAction("Index");
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(document.FilePath);
+            return File(fileBytes, "application/octet-stream", document.OriginalFileName);
         }
 
         [HttpDelete("{id}")]

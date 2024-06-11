@@ -13,11 +13,17 @@ namespace OnlineEducationWebApp.Data.Services
         {
             _context = context;
         }
-        public async Task<Document> CreateAsync(Document document)
+        public async Task<Document> CreateAsync(Document document,int lessonId)
         {
-            await _context.Documents.AddAsync(document);
-            await _context.SaveChangesAsync();
-            return document;
+            var lesson = await _context.Lessons.FindAsync(lessonId);
+            if (lesson != null)
+            {
+                document.Lesson = lesson;
+                await _context.Documents.AddAsync(document);
+                await _context.SaveChangesAsync();
+                return document;
+            }
+            return null;
         }
 
         public async Task DeleteAsync(int id)
@@ -27,21 +33,50 @@ namespace OnlineEducationWebApp.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Document>> GetAllAsync()
-        {
-            return await _context.Documents.ToListAsync();
-        }
+
 
         public async Task<Document> GetByIdAsync(int id)
         {
             return await _context.Documents.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task UpdateAsync(Document document)
+        public async Task<List<Document>> GetDocumentForLessonAsync(int lessonId)
         {
-            var unchangedEntity = await _context.Documents.FindAsync(document.Id);
-            _context.Entry(unchangedEntity).CurrentValues.SetValues(document);
+            return await _context.Documents
+                .Where(document => document.LessonId == lessonId)
+                .ToListAsync();
+        }
+
+        public async Task<Document> UploadAsync(Document document, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                throw new ArgumentException("File is empty or null");
+            }
+
+            var lesson = await _context.Lessons.FindAsync(document.LessonId);
+            if (lesson == null)
+            {
+                throw new ArgumentException("Lesson not found");
+            }
+
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string filePath = Path.Combine(@"C:\Path\To\Documents", uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            document.FileName = uniqueFileName;
+            document.OriginalFileName = file.FileName;
+            document.FilePath = filePath;
+            document.Lesson = lesson;
+
+            await _context.Documents.AddAsync(document);
             await _context.SaveChangesAsync();
+
+            return document;
         }
     }
 }

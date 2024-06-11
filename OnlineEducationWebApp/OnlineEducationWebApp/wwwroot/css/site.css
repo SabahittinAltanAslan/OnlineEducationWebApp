@@ -18,5 +18,24 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    overflow-x: hidden;
+}
+
+#sidebar {
+    min-height: 100vh;
+    width: 250px;
+    position: fixed;
+}
+
+#page-content-wrapper {
+    padding-left: 250px;
+}
+
+#wrapper.toggled #sidebar {
+    margin-left: -250px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+    padding-left: 0;
 }

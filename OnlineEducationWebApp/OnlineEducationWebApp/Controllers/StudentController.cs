@@ -2,8 +2,10 @@
 using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Interfaces;
 
+
 namespace OnlineEducationWebApp.Controllers
 {
+    [Route("students")]
     public class StudentController : Controller
     {
         private readonly IStudentService _service;
@@ -12,16 +14,15 @@ namespace OnlineEducationWebApp.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
             var result = await _service.GetAllStudentsAsync();
-
             return View(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)//FromQuery
+        [HttpGet("get/{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
             var result = await _service.GetStudentByIdAsync(id);
             if (result == null)
@@ -31,14 +32,31 @@ namespace OnlineEducationWebApp.Controllers
             return View(result);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(Student student)//FromBody
+        [HttpGet("create")]
+        public IActionResult Create()
         {
-            var addedProduct = await _service.CreateAsync(student);
-            return RedirectToAction("Index");
+            return View();
         }
 
-        [HttpPut]
+        [HttpPost("create")]
+        public async Task<IActionResult> Create(Student student)
+        {
+            var addedProduct = await _service.CreateAsync(student);
+            return RedirectToAction("GetAll");
+        }
+
+        [HttpGet("update/{id}")]
+        public async Task<IActionResult> Update(int id)
+        {
+            var student = await _service.GetStudentByIdAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
+        }
+
+        [HttpPost("update/{id}")]
         public async Task<IActionResult> Update(Student student)
         {
             var checkProduct = await _service.GetStudentByIdAsync(student.Id);
@@ -47,10 +65,10 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(student.Id);
             }
             await _service.UpdateAsync(student);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetAll");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var checkProduct = await _service.GetStudentByIdAsync(id);
@@ -59,7 +77,8 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(id);
             }
             await _service.DeleteAsync(id);
-            return RedirectToAction("Index");
+            return Redirect("/students/all");
         }
     }
 }
+
