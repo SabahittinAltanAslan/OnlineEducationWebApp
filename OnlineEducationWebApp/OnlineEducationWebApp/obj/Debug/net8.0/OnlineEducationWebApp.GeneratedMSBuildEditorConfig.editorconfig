@@ -34,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRcR2V0Rm9yTGVzc29uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Document/GetForStudentLesson.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRG9jdW1lbnRcR2V0Rm9yU3R1ZGVudExlc3Nvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -46,6 +50,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Lesson/GetForStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXEdldEZvclN0dWRlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Lesson/GetForTeacher.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVzc29uXEdldEZvclRlYWNoZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -54,12 +62,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Shared/_StudentLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdHVkZW50TGF5b3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Shared/_TeacherLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9UZWFjaGVyTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/StudentLesson/GetLessonsForStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudExlc3NvblxHZXRMZXNzb25zRm9yU3R1ZGVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Legen/OneDrive/Belgeler/GitHub/OnlineEducationWebApp/OnlineEducationWebApp/OnlineEducationWebApp/Views/Student/CreateStudent.cshtml]

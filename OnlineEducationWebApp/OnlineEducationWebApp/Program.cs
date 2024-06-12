@@ -23,6 +23,7 @@ namespace OnlineEducationWebApp
             builder.Services.AddScoped<ILessonService,LessonService>();
             builder.Services.AddScoped<ITeacherService,TeacherService>();
             builder.Services.AddScoped<IDocumentService,DocumentService>();
+            builder.Services.AddScoped<IStudentLessonService,StudentLessonService>();
 
             var app = builder.Build();
 

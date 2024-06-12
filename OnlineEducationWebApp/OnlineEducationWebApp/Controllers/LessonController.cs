@@ -12,6 +12,12 @@ namespace OnlineEducationWebApp.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetForStudent()
+        {
+            var result = await _service.GetLessonsAsync(); 
+            return View(result);
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetForTeacher(int id)
@@ -32,9 +38,9 @@ namespace OnlineEducationWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Lesson lesson,int teacherId)//FromBody
         {
-
+            teacherId = 1;
             var addedProduct = await _service.CreateAsync(lesson,teacherId);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetForTeacher", new { id = teacherId });
         }
 
 

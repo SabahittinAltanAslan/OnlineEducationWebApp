@@ -48,12 +48,12 @@ namespace OnlineEducationWebApp.Data.Context
                 .WithMany(x => x.StudentLessons)
                 .HasForeignKey(x => x.LessonId);
 
-            /*A dependency in which a course can have more than one teacher,
-             * but a teacher can only teach one course.*/
-            modelBuilder.Entity<Lesson>()
-                .HasMany(x => x.Teachers)
-                .WithOne(X => X.Lesson)
-                .HasForeignKey(x=>x.LessonId);
+            /*A dependency in which a teacher  can have more than one course ,
+             * but a course can only one teacher.*/
+            modelBuilder.Entity<Teacher>()
+                .HasMany(x => x.Lessons)
+                .WithOne(X => X.Teacher)
+                .HasForeignKey(x=>x.TeacherId);
 
             base.OnModelCreating(modelBuilder);
         }

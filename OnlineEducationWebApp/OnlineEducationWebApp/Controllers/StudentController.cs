@@ -17,6 +17,7 @@ namespace OnlineEducationWebApp.Controllers
         public async Task<IActionResult> GetStudentForLesson(int id)
         {
             var result = await _service.GetStudentForLessonAsync(id);
+            ViewBag.LessonId = id;
             return View(result);
         }
 

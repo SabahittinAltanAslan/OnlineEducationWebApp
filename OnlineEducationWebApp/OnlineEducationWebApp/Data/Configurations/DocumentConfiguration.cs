@@ -10,7 +10,7 @@ namespace OnlineEducationWebApp.Data.Configurations
         {
             builder.Property(x => x.OriginalFileName).IsRequired();
             builder.Property(x=>x.Description).HasMaxLength(150);
-            builder.Property(x=>x.FilePath).HasMaxLength(100);
+            builder.Property(x=>x.FilePath).HasMaxLength(250);
         }
     }
 }

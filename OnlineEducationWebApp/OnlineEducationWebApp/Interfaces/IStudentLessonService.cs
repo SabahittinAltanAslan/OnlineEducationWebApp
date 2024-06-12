@@ -6,9 +6,12 @@ namespace OnlineEducationWebApp.Interfaces
     {
         public Task<List<StudentLesson>> GetLessonStudentAsync (int lessonId);
 
-        public Task KickStudentAsync (int id);
+        public Task KickStudentAsync (StudentLesson studentLesson);
 
-        public Task<StudentLesson>  SubscribeToLessonAsync (StudentLesson studentLesson, int studentId, int lessonId);
+        public Task<StudentLesson>  SubscribeToLessonAsync (int studentId, int lessonId);
+        public Task<StudentLesson> GetByIdForKickAsync(int lessonId, int studentId);
+        public Task<List<Lesson>> GetLessonsForStudentAsync(int studentId);
+
 
     }
 }

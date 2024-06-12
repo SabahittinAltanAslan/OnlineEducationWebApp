@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineEducationWebApp.Data.Context;
 
@@ -11,9 +12,11 @@ using OnlineEducationWebApp.Data.Context;
 namespace OnlineEducationWebApp.Data.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class LessonContextModelSnapshot : ModelSnapshot
+    [Migration("20240612164146_Teacher_Lesson_ModelsUpdate")]
+    partial class Teacher_Lesson_ModelsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,8 +44,8 @@ namespace OnlineEducationWebApp.Data.Migrations
 
                     b.Property<string>("FilePath")
                         .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("LessonId")
                         .HasColumnType("int");

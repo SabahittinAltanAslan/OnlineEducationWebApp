@@ -18,7 +18,7 @@ namespace OnlineEducationWebApp.Data.Services
             var teacher = await _context.Teachers.FindAsync(teacherId);
             if (teacher != null)
             {
-                lesson.Teachers = new List<Teacher> { teacher };
+                lesson.Teacher = teacher;
                 await _context.Lessons.AddAsync(lesson);
                 await _context.SaveChangesAsync();
                 return lesson;
@@ -33,6 +33,7 @@ namespace OnlineEducationWebApp.Data.Services
             await _context.SaveChangesAsync();
         }
 
+
         public async Task<Lesson> GetLessonByIdAsync(int id)
         {
             return await _context.Lessons.AsNoTracking().SingleOrDefaultAsync(x => x.Id == id);
@@ -46,7 +47,7 @@ namespace OnlineEducationWebApp.Data.Services
         public async Task<List<Lesson>> GetTeacherLessonAsync(int teacherId)
         {
             return await _context.Lessons
-                .Where(lesson => lesson.Teachers.Any(teacher => teacher.Id == teacherId))
+                .Where(lesson => lesson.TeacherId == teacherId)
                 .ToListAsync();
         }
 

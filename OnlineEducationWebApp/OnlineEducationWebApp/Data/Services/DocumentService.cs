@@ -13,18 +13,18 @@ namespace OnlineEducationWebApp.Data.Services
         {
             _context = context;
         }
-        public async Task<Document> CreateAsync(Document document,int lessonId)
-        {
-            var lesson = await _context.Lessons.FindAsync(lessonId);
-            if (lesson != null)
-            {
-                document.Lesson = lesson;
-                await _context.Documents.AddAsync(document);
-                await _context.SaveChangesAsync();
-                return document;
-            }
-            return null;
-        }
+        //public async Task<Document> CreateAsync(Document document,int lessonId)
+        //{
+        //    var lesson = await _context.Lessons.FindAsync(lessonId);
+        //    if (lesson != null)
+        //    {
+        //        document.Lesson = lesson;
+        //        await _context.Documents.AddAsync(document);
+        //        await _context.SaveChangesAsync();
+        //        return document;
+        //    }
+        //    return null;
+        //}
 
         public async Task DeleteAsync(int id)
         {
@@ -47,6 +47,7 @@ namespace OnlineEducationWebApp.Data.Services
                 .ToListAsync();
         }
 
+
         public async Task<Document> UploadAsync(Document document, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -61,7 +62,7 @@ namespace OnlineEducationWebApp.Data.Services
             }
 
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-            string filePath = Path.Combine(@"C:\Path\To\Documents", uniqueFileName);
+            string filePath = Path.Combine(@"C:\Users\Legen\OneDrive\Masaüstü\Documents", uniqueFileName);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {

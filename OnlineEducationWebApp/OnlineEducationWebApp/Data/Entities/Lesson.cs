@@ -8,7 +8,8 @@
         
         //Navigation Property
         public ICollection<StudentLesson> StudentLessons { get; set; }
-        public List<Teacher> Teachers { get; set; }
+        public Teacher Teacher { get; set; }
+        public int TeacherId { get; set; }
         public List<Document> Documents { get; set; }
 
     }

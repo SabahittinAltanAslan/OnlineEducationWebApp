@@ -19,6 +19,16 @@ namespace OnlineEducationWebApp.Controllers
         public async Task<IActionResult> GetForLesson(int id)
         {
             var result = await _service.GetDocumentForLessonAsync(id);
+            ViewBag.LessonId = id;
+            return View(result);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetForStudentLesson(int id)
+        {
+            var result = await _service.GetDocumentForLessonAsync(id);
+            ViewBag.LessonId = id;
             return View(result);
 
         }
@@ -33,12 +43,13 @@ namespace OnlineEducationWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Document document, IFormFile pdfFile)
         {
-            if (ModelState.IsValid)
+            if (document.FileName == null || document.Description == null)
             {
-                await _service.UploadAsync(document, pdfFile);
-                return RedirectToAction("GetForLesson", new { lessonId = document.LessonId });
+                return BadRequest("File Name or Description can not be null!");
             }
-            return View(document);
+            await _service.UploadAsync(document, pdfFile);
+            return RedirectToAction("GetForLesson", new { id = document.LessonId });
+
         }
 
         [HttpGet]
@@ -54,7 +65,7 @@ namespace OnlineEducationWebApp.Controllers
             return File(fileBytes, "application/octet-stream", document.OriginalFileName);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var checkProduct = await _service.GetByIdAsync(id);
@@ -63,7 +74,7 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(id);
             }
             await _service.DeleteAsync(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("GetForLesson");
         }
     }
 }

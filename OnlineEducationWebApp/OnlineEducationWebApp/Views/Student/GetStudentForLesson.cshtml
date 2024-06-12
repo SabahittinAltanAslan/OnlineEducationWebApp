@@ -1,6 +1,7 @@
 ﻿@{
     ViewData["Title"] = "GetStudentForLesson";
     Layout = "~/Views/Shared/_TeacherLayout.cshtml";
+    int lessonId = ViewBag.LessonId; // Retrieve the lessonId from ViewBag
 }
 
 @model IEnumerable<OnlineEducationWebApp.Data.Entities.Student>
@@ -12,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students for Lesson</title>
     <link href="~/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
@@ -39,39 +39,16 @@
                         <td>@student.SchNumber</td>
                         <td>@student.BirthDay.ToShortDateString()</td>
                         <td>
-                            <button class="btn btn-danger" onclick="confirmDelete(@student.Id)">Kick</button>
+                            <form action="/StudentLesson/KickStudent" method="post" onsubmit="return confirm('Are you sure you want to kick this student?');">
+                                <input type="hidden" name="lessonId" value="@lessonId" />
+                                <input type="hidden" name="studentId" value="@student.Id" />
+                                <button type="submit" class="btn btn-danger">Kick</button>
+                            </form>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-    <script src="~/jquery/jquery.min.js"></script>
-    <script src="~/sweetalert2/sweetalert2.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script>
-        function confirmDelete(id) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'Do you want to delete this student?',
-                icon: 'warning',
-                showDenyButton: true,
-                confirmButtonText: 'Yes',
-                denyButtonText: 'No'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '#' + id,//StudentLesson'dan silinecek öğrenci dersten atılacak tamamen silinmeyeceek
-                        type: 'DELETE',
-                        success: function (response) {
-                            location.reload(); // Reload the page after delete
-                        }
-                    });
-                } else if (result.isDenied) {
-                    Swal.fire("Cancelled", "Delete action was cancelled", "info");
-                }
-            });
-        }
-    </script>
 </body>
 </html>
