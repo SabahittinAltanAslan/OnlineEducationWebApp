@@ -7,12 +7,10 @@
         public string Surname { get; set; }
         public string SchNumber { get; set; }
         public DateTime BirthDay { get; set; }
-        public string UserName { get; set; }
-        public string Password {  get; set; }
-
+        public string Email { get; set; }
+        public string Password { get; set; }
 
         //Navigation Property
         public ICollection<StudentLesson> StudentLessons { get; set; }
-
     }
 }

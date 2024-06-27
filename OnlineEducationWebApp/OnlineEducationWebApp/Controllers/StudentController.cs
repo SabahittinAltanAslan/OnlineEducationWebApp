@@ -1,19 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Interfaces;
-
+using OnlineEducationWebApp.Models;
 
 namespace OnlineEducationWebApp.Controllers
 {
+    [Authorize(Roles = UserRoles.Student)]
+    [Route("[controller]")]
     public class StudentController : Controller
     {
         private readonly IStudentService _service;
+
         public StudentController(IStudentService service)
         {
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("GetStudentForLesson/{id}")]
         public async Task<IActionResult> GetStudentForLesson(int id)
         {
             var result = await _service.GetStudentForLessonAsync(id);
@@ -42,7 +46,7 @@ namespace OnlineEducationWebApp.Controllers
         public async Task<IActionResult> CreateStudent(Student student)
         {
             var addedProduct = await _service.CreateAsync(student);
-            return RedirectToAction("#");//Login sayfasına yönlendirilecek
+            return RedirectToAction("SignIn", "Home");
         }
 
         [HttpDelete]
@@ -54,8 +58,7 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(id);
             }
             await _service.DeleteAsync(id);
-            return RedirectToAction("#");//Login Sayfasına Yönlendirilecek Öğrenci Layoutunda Hesap sil butonu olacak orası için method
+            return RedirectToAction("SignIn", "Home");//Login Sayfasına Yönlendirilecek Öğrenci Layoutunda Hesap sil butonu olacak orası için method
         }
     }
 }
-

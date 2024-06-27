@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OnlineEducationWebApp.Data.Entities;
 using OnlineEducationWebApp.Data.Services;
 using OnlineEducationWebApp.Interfaces;
+using OnlineEducationWebApp.Models;
 
 namespace OnlineEducationWebApp.Controllers
 {
@@ -9,6 +11,7 @@ namespace OnlineEducationWebApp.Controllers
     {
         private readonly IDocumentService _service;
         private readonly ILessonService _lessonService;
+
         public DocumentController(IDocumentService service, ILessonService lessonService)
         {
             _service = service;
@@ -16,24 +19,25 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetForLesson(int id)
         {
             var result = await _service.GetDocumentForLessonAsync(id);
             ViewBag.LessonId = id;
             return View(result);
-
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetForStudentLesson(int id)
         {
             var result = await _service.GetDocumentForLessonAsync(id);
             ViewBag.LessonId = id;
             return View(result);
-
         }
 
         [HttpGet]
+        [Authorize(Roles = UserRoles.Teacher)]
         public IActionResult Create(int lessonId)
         {
             var document = new Document { LessonId = lessonId };
@@ -41,6 +45,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Teacher)]
         public async Task<IActionResult> Create(Document document, IFormFile pdfFile)
         {
             if (document.FileName == null || document.Description == null)
@@ -49,10 +54,10 @@ namespace OnlineEducationWebApp.Controllers
             }
             await _service.UploadAsync(document, pdfFile);
             return RedirectToAction("GetForLesson", new { id = document.LessonId });
-
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Download(int id)
         {
             var document = await _service.GetByIdAsync(id);
@@ -66,6 +71,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = UserRoles.Teacher)]
         public async Task<IActionResult> Delete(int id)
         {
             var checkProduct = await _service.GetByIdAsync(id);

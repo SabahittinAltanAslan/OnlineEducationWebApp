@@ -20,10 +20,25 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Anasayfa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Lesson" asp-action="Index">Tüm Dersler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Lessons">Derslerim</a>
+                        </li>
+                        <li class="nav-item">
+                            @{
+                                if (User.Identity.IsAuthenticated)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignOut">Çıkış</a>
+                                }
+                                else
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="SignIn">Giriş</a>
+                                }
+                            }
                         </li>
                     </ul>
                 </div>
