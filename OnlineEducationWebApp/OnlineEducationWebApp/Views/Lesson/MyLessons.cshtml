@@ -1,0 +1,106 @@
+﻿@model IEnumerable<Lesson>
+
+@{
+    ViewData["Title"] = "Derslerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Derslerim</h1>
+@{
+    //Get user role
+    var role = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+
+    if (role == UserRoles.Teacher)
+    {
+        <p>
+            <a class="btn btn-success" asp-controller="Lesson" asp-action="Create">Yeni ders oluştur</a>
+        </p>
+    }
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Teacher.Name)
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-controller="Document" asp-action="GetForLesson" asp-route-id="@item.Id">Belgeler</a> |
+
+                    @if (role == UserRoles.Teacher)
+                    {
+                        if (item.StartedAt == null && !item.IsCompleted)
+                        {
+                            <a class="btn btn-success" asp-controller="Lesson" asp-action="Start" asp-route-lessonUrl="@item.Url">Dersi başlat</a> 
+                        }
+                        else if (item.StartedAt != null && !item.IsCompleted)
+                        {
+                            <a class="btn btn-success" asp-controller="Lesson" asp-action="Class" asp-route-lessonUrl="@item.Url">Derse git</a>
+                        }
+
+                        <a class="btn btn-warning" asp-controller="Student" asp-action="GetStudentForLesson" asp-route-id="@item.Id">Öğrenciler</a>
+                        <button class="btn btn-danger" onclick="confirmDelete(@item.Id)">İptal et</button>
+                    }
+                    else if (role == UserRoles.Student)
+                    {
+                        if (item.StartedAt != null && !item.IsCompleted) 
+                        {
+                            <a class="btn btn-success" asp-controller="Lesson" asp-action="Join" asp-route-lessonUrl="@item.Url">Derse git</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/jquery/jquery.min.js"></script>
+<script src="~/sweetalert2/sweetalert2.min.js"></script>
+<script>
+    function confirmDelete(lessonId) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: 'Bu dersi iptal etmek istiyor musunuz?',
+            icon: 'warning',
+            showDenyButton: true,
+            confirmButtonText: 'Evet',
+            denyButtonText: 'Hayır'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Lesson")/' + lessonId,
+                    type: 'DELETE',
+                    success: function (response) {
+                    }
+                });
+            }
+        });
+    }
+</script>

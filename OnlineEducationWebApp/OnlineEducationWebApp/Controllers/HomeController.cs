@@ -85,6 +85,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpGet("/sign-out")]
+        [Authorize]
         public IActionResult SignOut()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -96,22 +97,6 @@ namespace OnlineEducationWebApp.Controllers
         {
             ViewBag.ReturnUrl = returnUrl;
             return View();
-        }
-
-        [Authorize]
-        public IActionResult Lessons()
-        {
-            var lessons = _context.Lessons.ToList();
-
-            var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            var id = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-
-            if (role == "Teacher")
-                return Redirect("/lesson/GetForTeacher/" + id);
-            else if (role == "Student")
-                return Redirect("/student/GetStudentForLesson/" + id);
-
-            return View(lessons);
         }
 
         public IActionResult Register()

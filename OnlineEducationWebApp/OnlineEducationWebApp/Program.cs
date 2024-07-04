@@ -35,7 +35,7 @@ namespace OnlineEducationWebApp
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                   .AddCookie(opts =>
                   {
-                      opts.Cookie.Name = $".appname.auth";   // todo : deðiþtirin.
+                      opts.Cookie.Name = $".appname.auth";
                       opts.AccessDeniedPath = "/access-denied";
                       opts.LoginPath = "/sign-in";
                       opts.SlidingExpiration = true;

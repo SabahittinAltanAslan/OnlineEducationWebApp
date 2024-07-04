@@ -9,10 +9,14 @@ namespace OnlineEducationWebApp.Data.Services
     {
         private readonly ProjectContext _context;
 
-        public DocumentService(ProjectContext context)
+        private readonly IWebHostEnvironment _environment;
+
+        public DocumentService(ProjectContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
+
         //public async Task<Document> CreateAsync(Document document,int lessonId)
         //{
         //    var lesson = await _context.Lessons.FindAsync(lessonId);
@@ -31,9 +35,12 @@ namespace OnlineEducationWebApp.Data.Services
             var removedEntity = await _context.Documents.FindAsync(id);
             _context.Documents.Remove(removedEntity);
             await _context.SaveChangesAsync();
+
+            if (File.Exists(removedEntity.FilePath))
+            {
+                File.Delete(removedEntity.FilePath);
+            }
         }
-
-
 
         public async Task<Document> GetByIdAsync(int id)
         {
@@ -46,7 +53,6 @@ namespace OnlineEducationWebApp.Data.Services
                 .Where(document => document.LessonId == lessonId)
                 .ToListAsync();
         }
-
 
         public async Task<Document> UploadAsync(Document document, IFormFile file)
         {
@@ -62,9 +68,9 @@ namespace OnlineEducationWebApp.Data.Services
             }
 
             string uniqueFileName = Guid.NewGuid().ToString() + "_" + file.FileName;
-            string filePath = Path.Combine(@"C:\Users\Legen\OneDrive\Masaüstü\Documents", uniqueFileName);
+            string filePath = Path.Combine(_environment.ContentRootPath + "//Documents", uniqueFileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            using (var fileStream = new FileStream(filePath, FileMode.CreateNew))
             {
                 await file.CopyToAsync(fileStream);
             }

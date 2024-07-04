@@ -80,7 +80,7 @@ namespace OnlineEducationWebApp.Controllers
                 return NotFound(id);
             }
             await _service.DeleteAsync(id);
-            return RedirectToAction("GetForLesson");
+            return RedirectToAction("GetForLesson", new { id = checkProduct.LessonId});
         }
     }
 }

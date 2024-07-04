@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Lesson>
+
+@{
+    ViewData["Title"] = "Tüm dersler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Tüm dersler</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LessonDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Teacher)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LessonDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Teacher.Name)
+                </td>
+                <td>
+                    @{
+                        if (!item.IsCompleted)
+                        {
+                            <a class="btn btn-success" asp-action="Subscribe" asp-controller="Lesson" asp-route-lessonId="@item.Id">Derse kayıt ol</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

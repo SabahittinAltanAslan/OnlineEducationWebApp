@@ -6,49 +6,31 @@
 
 @model IEnumerable<OnlineEducationWebApp.Data.Entities.Student>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students for Lesson</title>
-    <link href="~/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-<body>
-    <div class="container mt-5">
-        <center>
-            <h2>Students for Lesson</h2>
-        </center>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Surname</th>
-                    <th>School Number</th>
-                    <th>Birth Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var student in Model)
-                {
-                    <tr>
-                        <td>@student.Name</td>
-                        <td>@student.Surname</td>
-                        <td>@student.SchNumber</td>
-                        <td>@student.BirthDay.ToShortDateString()</td>
-                        <td>
-                            <form action="/StudentLesson/KickStudent" method="post" onsubmit="return confirm('Are you sure you want to kick this student?');">
-                                <input type="hidden" name="lessonId" value="@lessonId" />
-                                <input type="hidden" name="studentId" value="@student.Id" />
-                                <button type="submit" class="btn btn-danger">Kick</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</body>
-</html>
+<h2>Öğrenciler</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>School Number</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.Name</td>
+                <td>@student.Surname</td>
+                <td>@student.SchNumber</td>
+                <td>
+                    <form asp-action="KickStudent" asp-controller="StudentLesson" asp-route-lessonId="@ViewBag.LessonId" method="post" onsubmit="return confirm('Are you sure you want to kick this student?');">
+                        <input type="hidden" name="lessonId" value="@lessonId" />
+                        <input type="hidden" name="studentId" value="@student.Id" />
+                        <button type="submit" class="btn btn-danger">Kick</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

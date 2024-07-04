@@ -6,7 +6,6 @@ using OnlineEducationWebApp.Models;
 
 namespace OnlineEducationWebApp.Controllers
 {
-    [Authorize(Roles = UserRoles.Student)]
     [Route("[controller]")]
     public class StudentController : Controller
     {
@@ -18,6 +17,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpGet("GetStudentForLesson/{id}")]
+        [Authorize(Roles = UserRoles.Teacher)]
         public async Task<IActionResult> GetStudentForLesson(int id)
         {
             var result = await _service.GetStudentForLessonAsync(id);
@@ -26,6 +26,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = UserRoles.Student)]
         public async Task<IActionResult> GetStudentById(int id)
         {
             var result = await _service.GetStudentByIdAsync(id);
@@ -50,6 +51,7 @@ namespace OnlineEducationWebApp.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = UserRoles.Admin)]
         public async Task<IActionResult> DeleteStudent(int id)
         {
             var checkProduct = await _service.GetStudentByIdAsync(id);
